@@ -38,30 +38,31 @@ def get_flights(airline_code, flight_number, year, month, date):
     elements_airport = soup.find_all("div", class_="text-helper__TextHelper-sc-8bko4a-0 cHdMkI")
     elements_time = soup.find_all("div", class_="text-helper__TextHelper-sc-8bko4a-0 kbHzdx")
     elements_terminal_gate = soup.find_all("div", class_="ticket__TGBValue-sc-1rrbl5o-16 hUgYLc text-helper__TextHelper-sc-8bko4a-0 kbHzdx")
+    elements_depart_arrival = soup.find_all("div", class_="text-helper__TextHelper-sc-8bko4a-0 cPBDDe")
 
-    from_depart_times = soup.find("div", class_="text-helper__TextHelper-sc-8bko4a-0 cPBDDe")
-    to_arrival_times = soup.find("div", class_="text-helper__TextHelper-sc-8bko4a-0 cPBDDe")
+    # Strip data safely using safe_get_text
+    flight_status_concat = safe_get_text(flight_status_element) if flight_status_element else "N/A"
+    flight_eta_concat = safe_get_text(flight_eta_element) if flight_eta_element else "N/A"
 
-    # Strip data safely
-    flight_status = safe_get_text(flight_status_element) + " " + safe_get_text(flight_eta_element)
+    flight_status = flight_status_concat + " " + flight_eta_concat
     flight_airline = safe_get_text(flight_airline)
 
-    flight_from_location = safe_get_text(elements_location[0]) if len(safe_get_text(elements_location[0])) > 0 else "N/A"
-    flight_from_airport = safe_get_text(elements_airport[0]) if len(safe_get_text(elements_airport[0])) > 0 else "N/A"
-    flight_from_depart_times = safe_get_text(from_depart_times) if len(safe_get_text(from_depart_times)) > 0 else "N/A"
-    flight_from_scheduled = safe_get_text(elements_time[0]) if len(safe_get_text(elements_time[0])) > 0 else "N/A"
-    flight_from_actual = safe_get_text(elements_time[1]) if len(safe_get_text(elements_time[1])) > 0 else "N/A"
-    flight_from_terminal = safe_get_text(elements_terminal_gate[0]) if len(safe_get_text(elements_terminal_gate[0])) > 0 else "N/A"
-    flight_from_gate = safe_get_text(elements_terminal_gate[1]) if len(safe_get_text(elements_terminal_gate[1])) > 0 else "N/A"
+    flight_from_location = safe_get_text(elements_location[0]) if len(elements_location) > 0 else "N/A"
+    flight_from_airport = safe_get_text(elements_airport[0]) if len(elements_airport) > 0 else "N/A"
+    flight_from_depart_times = safe_get_text(elements_depart_arrival[0]) if len(elements_depart_arrival) > 0 else "N/A"
+    flight_from_scheduled = safe_get_text(elements_time[0]) if len(elements_time) > 0 else "N/A"
+    flight_from_actual = safe_get_text(elements_time[1]) if len(elements_time) > 1 else "N/A"
+    flight_from_terminal = safe_get_text(elements_terminal_gate[0]) if len(elements_terminal_gate) > 0 else "N/A"
+    flight_from_gate = safe_get_text(elements_terminal_gate[1]) if len(elements_terminal_gate) > 1 else "N/A"
 
-    flight_to_location = safe_get_text(elements_location[1]) if len(safe_get_text(elements_location[1])) > 0 else "N/A"
-    flight_to_airport = safe_get_text(elements_airport[1]) if len(safe_get_text(elements_airport[1])) > 0 else "N/A"
-    flight_to_arrival_times = safe_get_text(to_arrival_times) if len(safe_get_text(to_arrival_times)) > 0 else "N/A"
-    flight_to_scheduled = safe_get_text(elements_time[2]) if len(safe_get_text(elements_time[2])) > 0 else "N/A"
-    flight_to_actual = safe_get_text(elements_time[3]) if len(safe_get_text(elements_time[3])) > 0 else "N/A"
-    flight_to_terminal = safe_get_text(elements_terminal_gate[2]) if len(safe_get_text(elements_terminal_gate[2])) > 0 else "N/A"
-    flight_to_gate = safe_get_text(elements_terminal_gate[3]) if len(safe_get_text(elements_terminal_gate[3])) > 0 else "N/A"
-    flight_to_baggage = safe_get_text(elements_terminal_gate[4]) if len(safe_get_text(elements_terminal_gate[4])) > 0 else "N/A"
+    flight_to_location = safe_get_text(elements_location[1]) if len(elements_location) > 1 else "N/A"
+    flight_to_airport = safe_get_text(elements_airport[1]) if len(elements_airport) > 1 else "N/A"
+    flight_to_arrival_times = safe_get_text(elements_depart_arrival[1]) if len(elements_depart_arrival) > 1 else "N/A"
+    flight_to_scheduled = safe_get_text(elements_time[2]) if len(elements_time) > 2 else "N/A"
+    flight_to_actual = safe_get_text(elements_time[3]) if len(elements_time) > 3 else "N/A"
+    flight_to_terminal = safe_get_text(elements_terminal_gate[2]) if len(elements_terminal_gate) > 2 else "N/A"
+    flight_to_gate = safe_get_text(elements_terminal_gate[3]) if len(elements_terminal_gate) > 3 else "N/A"
+    flight_to_baggage = safe_get_text(elements_terminal_gate[4]) if len(elements_terminal_gate) > 4 else "N/A"
 
     # Return the required values as key
     return {

@@ -1,11 +1,11 @@
 from scraper import get_flights  # Import from scraper
 
 def main():
-    airline_code = "OS"
-    flight_number = "302"
+    airline_code = "MS"
+    flight_number = "965"
     year = "2024"
     month = "12"
-    date = "20"
+    date = "22"
 
     flight_data = get_flights(airline_code, flight_number, year, month, date)
 
